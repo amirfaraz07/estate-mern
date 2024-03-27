@@ -24,7 +24,7 @@ export const signin = async (req, res, next) => {
         const validPassword = bcryptjs.compareSync(password, validUser.password);
         if( !validPassword ) return next(errorHandler(401, 'Wrong Password'));
         const token = jwt.sign({ id:validUser._id }, process.env.JWT_SECRET);
-        const { password: pass, ...rest } = validUser._doc;
+        const { password: pass, ...rest } = validUser._doc; // this will separate password from rest info of user
         res.cookie('access_token', token, {httpOnly: true}).status(200).json(rest);
     } catch (error) {
         next(error);
